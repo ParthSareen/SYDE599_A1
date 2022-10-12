@@ -11,16 +11,17 @@ class NeuralNetwork:
         # call methods with Layer class to set up the network initially
         pass
 
-    def train(self, input_mat, output_mat, epochs):
+    def train(self, input_mat: np.ndarray, output_mat: np.ndarray, epochs: int):
+
         pass
 
-    def single_pass(self, input_vec, output_vec):
+    def single_pass(self, input_vec: np.ndarray, output_vec: np.ndarray):
         pass
 
-    def predict(self, input_vec):
+    def predict(self, input_vec: np.array) -> np.ndarray:
         pass
 
-    def loss(self, output_vec, output_vec_pred):
+    def loss(self, output_vec: np.array, output_vec_pred: np.array):
         pass
 
     def display_grad(self):
