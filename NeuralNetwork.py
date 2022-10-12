@@ -8,12 +8,10 @@ class NeuralNetwork:
         self.__setup__()
 
     def __setup__(self):
-
         # call methods with Layer class to set up the network initially
         pass
 
     def train(self, input_mat: np.ndarray, output_mat: np.ndarray, epochs: int):
-
         pass
 
     def single_pass(self, input_vec: np.ndarray, output_vec: np.ndarray):
