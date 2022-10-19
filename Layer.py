@@ -52,7 +52,7 @@ class Layer:
         if self.activation_type == Activation.RELU:
             self.delta_vec = np.where(self.activations_vec <= 0, 0, 1) * next_grad
         elif self.activation_type == Activation.REGRESSION:
-            self.delta_vec = self.output_vec
+            self.delta_vec = next_grad
         elif self.activation_type == Activation.SIGMOID:
             self.delta_vec = self.output_vec * (1 - self.output_vec) * next_grad
         else:

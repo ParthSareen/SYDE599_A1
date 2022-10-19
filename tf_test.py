@@ -1,6 +1,22 @@
 import tensorflow as tf
 import numpy as np
 import pickle
+import matplotlib.pyplot as plt
+
+
+
+def plot(losses):
+    plt.figure()
+    plt.scatter(range(len(losses)), losses)
+    plt.title("Model training losses")
+    plt.ylabel("Loss")
+    plt.xlabel("Epoch")
+    plt.show()
+
+
+
+def your_loss(y_true, y_pred):
+    return (y_pred - y_true) * (y_pred - y_true) / 2
 
 with open('datafiles/assignment-one-test-parameters.pkl', 'rb') as f:
     data = pickle.load(f)
@@ -29,13 +45,15 @@ model.layers[5].set_weights((np.transpose(np.array(weights_layer_three)), bias_l
 
 print(model.summary())
 
-model.compile(optimizer=tf.keras.optimizers.Adam(0.01), loss=tf.keras.losses.MeanSquaredError())
+model.compile(optimizer=tf.keras.optimizers.SGD(0.01), loss=your_loss)
 
 pred = model.predict(inputs)
 truth = np.expand_dims(np.array(targets), -1)
 
 # print((pred - truth) * (pred - truth)/ 2)
 
-model.fit(inputs, targets, batch_size=200, epochs=5)
-print(model.predict(inputs))
-# print(model.layers[1].get_weights())
+l = model.fit(inputs, targets, batch_size=300, epochs=500)
+# print(model.predict(inputs))
+print(l.history["loss"])
+plot(l.history["loss"])
+# print(model.layers[5].get_weights())

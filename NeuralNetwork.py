@@ -3,7 +3,7 @@ from Layer import Layer
 
 
 class NeuralNetwork:
-    def __init__(self, layers: [Layer], learning_rate=0.01):
+    def __init__(self, layers: list[Layer], learning_rate=0.01):
         self.layers = layers
         self.learning_rate = learning_rate
         self.__setup__()
@@ -37,13 +37,18 @@ class NeuralNetwork:
                 self.backward(y)
                 samples_losses.append(np.mean(sample_loss_vec))
 
-            print("done epoch, applying grad")
             self.apply_gradient(input_mat.shape[0])
 
             losses.append(sum(samples_losses) / len(samples_losses))
 
-        print(losses)
         return losses
+
+    def evaluate(self, input_mat: np.ndarray, output_mat: np.ndarray) -> float:
+        sample_losses = []
+        for x, y in zip(input_mat, output_mat):
+            sample_loss_vec = self.single_pass(x, y)
+            sample_losses.append(np.mean(sample_loss_vec))
+        return sum(sample_losses) / len(sample_losses)
 
     def single_pass(self, input_vec: np.array, y_truth_vec: np.array) -> np.array:
         if input_vec.shape[0] != self.layers[0].num_prev_nodes:  # if incorrect number of inputs
@@ -91,3 +96,7 @@ class NeuralNetwork:
     def display_grad(self, layer_num: int):
         print(f'Gradient of layer {layer_num}')
         self.layers[layer_num].print_grad()
+
+    def display_layer_weights(self, layer_num: int):
+        print(f"Weights of layer {layer_num}")
+        self.layers[layer_num].print_weights()
