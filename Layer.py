@@ -36,6 +36,17 @@ class Layer:
         self.bias_grad_vec = np.zeros((nodes, ))
         self.delta_vec = np.zeros((nodes, ))
 
+    def set_weights(self, weights_mat: np.ndarray, bias_vec: np.array):
+        if weights_mat.shape != (self.num_nodes, self.num_prev_nodes):  # if incorrect shape given
+            raise "incorrect shape given"
+        else:
+            self.weights_mat = weights_mat
+
+        if bias_vec.shape != (self.num_nodes, ):  # if incorrect shape given
+            raise "incorrect shape given"
+        else:
+            self.bias_vec = bias_vec
+
     def reset_grad(self):
         self.weights_grad_mat = np.zeros((self.num_nodes, self.num_prev_nodes))
         self.bias_grad_vec = np.zeros((self.num_nodes, ))

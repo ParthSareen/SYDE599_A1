@@ -3,7 +3,7 @@ from Layer import Layer
 
 
 class NeuralNetwork:
-    def __init__(self, layers: list[Layer], learning_rate=0.01):
+    def __init__(self, layers: 'list[Layer]', learning_rate=0.01):
         self.layers = layers
         self.learning_rate = learning_rate
         self.__setup__()
@@ -12,7 +12,7 @@ class NeuralNetwork:
         # call methods with Layer class to set up the network initially
         pass
 
-    def train(self, input_mat: np.ndarray, output_mat: np.ndarray, epochs: int) -> list[float]:
+    def train(self, input_mat: np.ndarray, output_mat: np.ndarray, epochs: int) -> 'list[float]':
         """
         Trains the network using input_mat and output_mat for number of epochs
         :param input_mat: [#samples, input_size] np array
@@ -42,6 +42,19 @@ class NeuralNetwork:
             losses.append(sum(samples_losses) / len(samples_losses))
 
         return losses
+
+    def set_weights(self, weights: 'list[tuple[np.ndarray, np.array]]'):
+        """
+        Sets the parameters of all layers in the network according to weights
+        :param weights: list of weights (1 per layer). Each item in the list should be a tuple containing w_mat (np ndarray)
+            and b_vec (np array)
+        :return: Nothing
+        """
+        if len(weights) != len(self.layers):
+            raise "Incorrect shape of weights given"
+
+        for parameters, layer in zip(weights, self.layers):
+            layer.set_weights(parameters[0], parameters[1])
 
     def evaluate(self, input_mat: np.ndarray, output_mat: np.ndarray) -> float:
         sample_losses = []

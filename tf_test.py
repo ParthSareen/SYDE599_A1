@@ -4,7 +4,6 @@ import pickle
 import matplotlib.pyplot as plt
 
 
-
 def plot(losses):
     plt.figure()
     plt.scatter(range(len(losses)), losses)
@@ -12,7 +11,6 @@ def plot(losses):
     plt.ylabel("Loss")
     plt.xlabel("Epoch")
     plt.show()
-
 
 
 def your_loss(y_true, y_pred):
@@ -31,10 +29,13 @@ inputs = data['inputs']
 targets = data['targets']
 
 i = tf.keras.Input(shape=2)
+
 x = tf.keras.layers.Dense(10)(i)
 x = tf.keras.layers.ReLU()(x)
+
 x = tf.keras.layers.Dense(10)(x)
-x = tf.keras.layers.ReLU()(x)
+x = tf.keras.activations.relu(x)
+
 output = tf.keras.layers.Dense(1)(x)
 
 model = tf.keras.Model(inputs=i, outputs=output)
@@ -52,8 +53,13 @@ truth = np.expand_dims(np.array(targets), -1)
 
 # print((pred - truth) * (pred - truth)/ 2)
 
-l = model.fit(inputs, targets, batch_size=300, epochs=500)
+loss_untrained = model.evaluate(inputs, targets, batch_size=200)
+
+l = model.fit(inputs, targets, batch_size=200, epochs=5)
 # print(model.predict(inputs))
-print(l.history["loss"])
-plot(l.history["loss"])
+
+losses = l.history["loss"]
+losses.append(model.evaluate(inputs, targets, batch_size=200))
+print(losses)
+plot(losses)
 # print(model.layers[5].get_weights())
