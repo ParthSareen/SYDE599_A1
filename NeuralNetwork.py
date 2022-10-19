@@ -3,7 +3,7 @@ from Layer import Layer
 
 
 class NeuralNetwork:
-    def __init__(self, layers: list[Layer], learning_rate=0.01):
+    def __init__(self, layers: 'list[Layer]', learning_rate=0.01):
         self.layers = layers
         self.learning_rate = learning_rate
         self.__setup__()
@@ -12,7 +12,7 @@ class NeuralNetwork:
         # call methods with Layer class to set up the network initially
         pass
 
-    def train(self, input_mat: np.ndarray, output_mat: np.ndarray, epochs: int) -> list[float]:
+    def train(self, input_mat: np.ndarray, output_mat: np.ndarray, epochs: int) -> 'list[float]':
         """
         Trains the network using input_mat and output_mat for number of epochs
         :param input_mat: [#samples, input_size] np array
