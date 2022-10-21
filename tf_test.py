@@ -16,50 +16,57 @@ def plot(losses):
 def your_loss(y_true, y_pred):
     return (y_pred - y_true) * (y_pred - y_true) / 2
 
+
 with open('datafiles/assignment-one-test-parameters.pkl', 'rb') as f:
     data = pickle.load(f)
 
-weights_layer_one = data['w1']
-weights_layer_two = data['w2']
-weights_layer_three = data['w3']
-bias_layer_one = data['b1']
-bias_layer_two = data['b2']
-bias_layer_three = data['b3']
-inputs = data['inputs']
-targets = data['targets']
 
-i = tf.keras.Input(shape=2)
+def main():
+    weights_layer_one = data['w1']
+    weights_layer_two = data['w2']
+    weights_layer_three = data['w3']
+    bias_layer_one = data['b1']
+    bias_layer_two = data['b2']
+    bias_layer_three = data['b3']
+    inputs = data['inputs']
+    targets = data['targets']
 
-x = tf.keras.layers.Dense(10)(i)
-x = tf.keras.layers.ReLU()(x)
+    i = tf.keras.Input(shape=2)
 
-x = tf.keras.layers.Dense(10)(x)
-x = tf.keras.activations.relu(x)
+    x = tf.keras.layers.Dense(10)(i)
+    x = tf.keras.layers.ReLU()(x)
 
-output = tf.keras.layers.Dense(1)(x)
+    x = tf.keras.layers.Dense(10)(x)
+    x = tf.keras.activations.relu(x)
 
-model = tf.keras.Model(inputs=i, outputs=output)
+    output = tf.keras.layers.Dense(1)(x)
 
-model.layers[1].set_weights((np.transpose(np.array(weights_layer_one)), bias_layer_one))
-model.layers[3].set_weights((np.transpose(np.array(weights_layer_two)), bias_layer_two))
-model.layers[5].set_weights((np.transpose(np.array(weights_layer_three)), bias_layer_three))
+    model = tf.keras.Model(inputs=i, outputs=output)
 
-print(model.summary())
+    model.layers[1].set_weights((np.transpose(np.array(weights_layer_one)), bias_layer_one))
+    model.layers[3].set_weights((np.transpose(np.array(weights_layer_two)), bias_layer_two))
+    model.layers[5].set_weights((np.transpose(np.array(weights_layer_three)), bias_layer_three))
 
-model.compile(optimizer=tf.keras.optimizers.SGD(0.01), loss=your_loss)
+    print(model.summary())
 
-pred = model.predict(inputs)
-truth = np.expand_dims(np.array(targets), -1)
+    model.compile(optimizer=tf.keras.optimizers.SGD(0.01), loss=your_loss)
 
-# print((pred - truth) * (pred - truth)/ 2)
+    pred = model.predict(inputs)
+    truth = np.expand_dims(np.array(targets), -1)
 
-loss_untrained = model.evaluate(inputs, targets, batch_size=200)
+    # print((pred - truth) * (pred - truth)/ 2)
 
-l = model.fit(inputs, targets, batch_size=200, epochs=5)
-# print(model.predict(inputs))
+    loss_untrained = model.evaluate(inputs, targets, batch_size=200)
 
-losses = l.history["loss"]
-losses.append(model.evaluate(inputs, targets, batch_size=200))
-print(losses)
-plot(losses)
-# print(model.layers[5].get_weights())
+    l = model.fit(inputs, targets, batch_size=200, epochs=5)
+    # print(model.predict(inputs))
+
+    losses = l.history["loss"]
+    losses.append(model.evaluate(inputs, targets, batch_size=200))
+    print(losses)
+    plot(losses)
+    # print(model.layers[5].get_weights())
+
+
+if __name__ == '__main__':
+    main()
