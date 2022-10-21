@@ -2,7 +2,7 @@
 
 Install the required dependencies:
 
-`pip install -r requirements.txt`
+`pip install -r requirement.txt`
 
 To run the end to end program use the following command:
 
